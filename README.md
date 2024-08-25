@@ -17,4 +17,6 @@ To automate the execution of the notebooks, Papermill is utilized. Copies of the
 ## Web Application
 A web application was developed to visualize the results and dynamically adjust clustering thresholds and parameters. The code and resources for the app are located in a separate GitHub repository, which includes its own requirements.txt file.
 
+## Extra Features
+Two additional features were developed. The first is a custom pipeline that performs outlier detection and removal, followed by k-NN imputation at the start of the RTA. The second enhancement involves the integration of Papermill to automate the sequential execution of all notebooks. This automation has been implemented in a separate 'Papermill' folder, where copies of the notebooks have been parameterized to allow for flexible input and output locations.
 
