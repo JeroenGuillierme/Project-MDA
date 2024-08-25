@@ -13,13 +13,15 @@ from math import radians, cos, sin, asin, sqrt
 
 # Function to correct latitude values
 def correct_latitude(lat):
-    '''
+    """
     Corrects and standardizes latitude values by ensuring they are numeric and properly formatted.
+
     :param lat: str, float or int
-    The latitude value to be corrected.
+        The latitude value to be corrected.
     :return: float
-    The corrected latitude value, or NaN if the input is NaN.
-    '''
+        The corrected latitude value, or NaN if the input is NaN.
+    """
+
     if pd.isna(lat):
         return lat  # Return NaN as it is
     if isinstance(lat, (str, float, int)):
@@ -35,13 +37,14 @@ def correct_latitude(lat):
 
 # Function to correct longitude values
 def correct_longitude(lon):
-    '''
+    """
     Corrects and standardizes longitude values by ensuring they are numeric and properly formatted.
+
     :param lon: str, float or int
-    The longitude value to be corrected.
-    :return:float
-    The corrected longitude value, or NaN if the input is NaN.
-    '''
+        The longitude value to be corrected.
+    :return: float
+        The corrected longitude value, or NaN if the input is NaN.
+    """
     if pd.isna(lon):
         return lon  # Return NaN as it is
     if isinstance(lon, (str, float, int)):
@@ -57,15 +60,16 @@ def correct_longitude(lon):
 
 # Function to filter rows based on coordinates falling within Belgium
 def is_within_belgium(lat, lon):
-    '''
+    """
     Checks if given latitude and longitude coordinates fall within Belgium's geographical boundaries.
+
     :param lat: float
-    The latitude value to be checked.
+        The latitude value to be checked.
     :param lon: float
-    The longitude value to be checked.
+        The longitude value to be checked.
     :return: bool
-    True if the coordinates are within Belgium's boundaries, False otherwise.
-    '''
+        True if the coordinates are within Belgium's boundaries, False otherwise.
+    """
     # Define the geographical boundaries of Belgium
     belgium_boundaries = {
         'min_latitude': 49.50,
@@ -79,12 +83,16 @@ def is_within_belgium(lat, lon):
 
 
 def assign_province(df, boundaries):
-    '''
-    Assigns (correct) province name to certain set of coordinates, using a shapefile of Belgium with the province boundaries.
-    :param df: pandas dataframe containing the columns 'Latitude' and 'Longitude'
-    :return: pandas dataframe
-    Extended dataframe with extra column containing the Province names.
-    '''
+    """
+    Assigns the correct province name to coordinates using a shapefile of Belgium with the province boundaries.
+
+    :param df: pandas DataFrame
+        The DataFrame containing the columns 'Latitude' and 'Longitude'.
+    :param boundaries: GeoDataFrame
+        The GeoDataFrame containing the boundaries of Belgium's provinces.
+    :return: pandas DataFrame
+        Extended DataFrame with an extra column containing the Province names.
+    """
     # Create a GeoDataFrame from the input DataFrame
     geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
     gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
@@ -99,13 +107,16 @@ def assign_province(df, boundaries):
 
 
 def assign_nearest_province(df, belgium_with_provinces_boundary):
-    '''
+    """
     Assigns the nearest province name to points that lie just outside of Belgium.
-    :param df: pandas DataFrame containing the columns 'Latitude' and 'Longitude'
-    :param belgium_with_provinces_boundary: GeoDataFrame containing Belgium's provinces boundaries
+
+    :param df: pandas DataFrame
+        The DataFrame containing the columns 'Latitude' and 'Longitude'.
+    :param belgium_with_provinces_boundary: GeoDataFrame
+        The GeoDataFrame containing Belgium's province boundaries.
     :return: pandas DataFrame
-    Extended DataFrame with an extra column containing the Province names.
-    '''
+        Extended DataFrame with an extra column containing the nearest Province names for points outside Belgium.
+    """
 
     # Create a GeoDataFrame from the input DataFrame
     geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
@@ -148,41 +159,67 @@ def assign_nearest_province(df, belgium_with_provinces_boundary):
 
 # Function to convert time formats like %d%b%y:%H:%M:%S to date time
 def convert_format1(time1):
+    """
+    Converts a string representing time in the format %d%b%y:%H:%M:%S to a datetime object.
+
+    :param time1: str
+        The time string to be converted.
+    :return: datetime
+        The converted datetime object.
+    """
     return pd.to_datetime(time1, format='%d%b%y:%H:%M:%S')
 
 
 # Function to convert time formats like %Y-%m-%d %H:%M:%S.%f to date time
 def convert_format2(time2):
+    """
+    Converts a string representing time in the format %Y-%m-%d %H:%M:%S.%f to a datetime object.
+
+    :param time2: str
+        The time string to be converted.
+    :return: datetime
+        The converted datetime object.
+    """
     return pd.to_datetime(time2, format='%Y-%m-%d %H:%M:%S.%f')
 
 
 # Function to convert time formats like %Y-%m-%d %H:%M:%S.%f %z to date time
 def convert_format3(time3):
+    """
+    Converts a string representing time in the format %Y-%m-%d %H:%M:%S.%f %z to a datetime object.
+
+    :param time3: str
+        The time string to be converted.
+    :return: datetime
+        The converted datetime object.
+    """
     return pd.to_datetime(time3, format='%Y-%m-%d %H:%M:%S.%f %z', dayfirst=True)
 
 
 # Define a function to extract the numeric part using regex
 def extract_numeric(text):
-    '''
+    """
     Extracts the first numeric part from a given text using regular expressions.
+
     :param text: str
-    The text from which to extract the numeric part.
+        The text from which to extract the numeric part.
     :return: int or float
-    The extracted numeric value, or NaN if no numeric part is found.
-    '''
+        The extracted numeric value, or NaN if no numeric part is found.
+    """
     match = re.search(r'\d+', text)
     return int(match.group()) if match else np.nan
 
 
 # Function to convert Timedelta to minutes
 def timedelta_to_minutes(td):
-    '''
+    """
     Converts a pandas Timedelta object to minutes.
-    :param td: pd.TimeDelta
-    The Timedelta object to be converted.
+
+    :param td: pd.Timedelta
+        The Timedelta object to be converted.
     :return: float
-    The total duration in minutes.
-    '''
+        The total duration in minutes.
+    """
     return td.total_seconds() / 60
 
 
@@ -192,6 +229,19 @@ sns.set(style="whitegrid")
 
 # Function to draw histograms
 def draw_histograms(df, variables, n_rows, n_cols):
+    """
+    Draws histograms for specified variables in the DataFrame.
+
+    :param df: pandas DataFrame
+        The DataFrame containing the data to be plotted.
+    :param variables: list of str
+        The list of variable names for which histograms will be drawn.
+    :param n_rows: int
+        The number of rows in the subplot grid.
+    :param n_cols: int
+        The number of columns in the subplot grid.
+    :return: None
+    """
     fig = plt.figure()
     for i, var_name in enumerate(variables):
         ax = fig.add_subplot(n_rows, n_cols, i + 1)
@@ -206,6 +256,20 @@ def draw_histograms(df, variables, n_rows, n_cols):
 
 # Haversine formula
 def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculates the great-circle distance between two points on the Earth using the Haversine formula.
+
+    :param lon1: float
+        Longitude of the first point.
+    :param lat1: float
+        Latitude of the first point.
+    :param lon2: float
+        Longitude of the second point.
+    :param lat2: float
+        Latitude of the second point.
+    :return: float
+        Distance between the two points in kilometers.
+    """
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
     dlon = lon2 - lon1
     dlat = lat2 - lat1
@@ -221,12 +285,16 @@ def haversine(lon1, lat1, lon2, lat2):
 
 # Function to calculate cell size in decimal degrees based on desired grid area and latitude
 def calculate_cell_size(grid_area_km2, latitude_degrees):
-    '''
-    This function calculates the cell size in degrees based on a given grid size in km² and the latitude coordinate.
-    :param grid_area_km2: Wanted grid are in km².
-    :param latitude_degrees: The latitude coordinate at which the grid size in degrees need to be calculated.
-    :return: The degrees of the cell size used to split Belgium up in different grids of given area in km².
-    '''
+    """
+    Calculates the cell size in decimal degrees based on a given grid area in km² and the latitude coordinate.
+
+    :param grid_area_km2: float
+        The desired grid area in square kilometers.
+    :param latitude_degrees: float
+        The latitude coordinate at which the grid size in degrees needs to be calculated.
+    :return: float
+        The cell size in decimal degrees used to split Belgium into different grids of the given area in km².
+    """
     # Convert latitude to radians for trigonometric functions
     latitude_rad = np.radians(latitude_degrees)
 
