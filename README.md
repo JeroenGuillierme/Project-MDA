@@ -1,4 +1,5 @@
 # Project-MDA
+Python version used is 3.12.5
 ## Goal
 The primary goal of this project is to enhance survival rates in cases of sudden heart attacks by optimizing the placement of Automatic External Defibrillators (AEDs). While cardiopulmonary resuscitation (CPR) is often the most critical intervention, the availability and accessibility of AEDs can significantly impact survival outcomes.
 
