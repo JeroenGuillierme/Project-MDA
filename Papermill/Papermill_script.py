@@ -39,5 +39,6 @@ pm.execute_notebook(
     parameters=dict(input_data_path1='Results/preprocessed_data_with_distances.csv',
                     input_data_path2='Results/rta_data.csv',
                     url2=url2,
+                    output_gdf_interventions_path='Results/gdf_interventions_with_counts.csv',
                     output_aed_path='Results/new_aed_locations.csv')
 )
